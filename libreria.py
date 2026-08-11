@@ -36,15 +36,16 @@ def triangInf(A):
         return "La matriz no es cuadrada"
     dim = len(A)
     res = np.zeros((dim, dim))
-    print(res)
     for i in range(0, dim):
         for j in range(0,dim):
-            if i==j:
-                res[i][i]=1
             if i<j:
                 res[i][j]=0
             else:
-                res[i][j] = A[i][j]
+                if i==j:
+                    res[i][i]=1
+                else:
+                    res[i][j] = A[i][j]
+    return res
 
 A = np.array([
     [1,2,3],
