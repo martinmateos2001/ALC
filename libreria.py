@@ -23,6 +23,23 @@ for m in matrices:
     res.append(esCuadrada(m))
 print(sol == res)
 
+#%% ejercicio 2
+def triangSup(A):
+    if not esCuadrada(A):
+        return "La matriz no es cuadrada"
+    dim = len(A)
+    res = np.zeros((dim, dim))
+    for i in range(0, dim):
+        for j in range(0,dim):
+            if i>j:
+                res[i][j]=0
+            else:
+                if i==j:
+                    res[i][i]=1
+                else:
+                    res[i][j] = A[i][j]
+    return res
+
 #%% Ejercicio 3
 '''
 Crear una matriz cuadrada.
@@ -46,7 +63,7 @@ def triangInf(A):
                 else:
                     res[i][j] = A[i][j]
     return res
-
+#%% test ej3
 A = np.array([
     [1,2,3],
     [1,2,3],
