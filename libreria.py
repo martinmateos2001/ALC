@@ -1,13 +1,25 @@
 #%%
 import numpy as np
+
+# Matrices de prueba 
+A = np.array([
+    [1,2,3],
+    [1,2,3],
+    [1,2,3]
+])
+
+A_simetrica = np.array([
+    [1,2,3],
+    [2,5,2],
+    [3,2,1]
+])
+
 #%% ejercicio 1
 def esCuadrada(A):
     return A.shape[0] == A.shape[1]
 
 #%% test ej1
-A = np.array([
-    [1, 2],
-    [3, 4]])
+
 B= np.array([
     [1,2,0], 
     [1,2,3]])
@@ -40,6 +52,16 @@ def triangSup(A):
                     res[i][j] = A[i][j]
     return res
 
+#%% test ej2
+A = np.array([
+    [1,2,3],
+    [1,2,3],
+    [1,2,3]
+])
+supA = triangSup(A)
+print(A)
+print(supA)
+
 #%% Ejercicio 3
 '''
 Crear una matriz cuadrada.
@@ -64,23 +86,51 @@ def triangInf(A):
                     res[i][j] = A[i][j]
     return res
 #%% test ej3
-A = np.array([
-    [1,2,3],
-    [1,2,3],
-    [1,2,3]
-])
 infA = triangInf(A)
 print(A)
 print(infA)
 
+#%% ejercicio 4
+def diagonal(A):
+    if not esCuadrada(A):
+        return 'La matriz no es cuadrada'
+    res = np.zeros(A.shape)
+    for i in range(0, len(A)):
+        res[i][i]= A[i][i]
+    return res
+
+#%% test ej 4
+print(A)
+dia = diagonal(A)
+print(dia)
+for i in range(0,len(A)):
+    if not dia[i][i]== A[i][i]:
+        print(res)
+print(True)
+
+#%% ejercicio 5
+def traza(A):
+    res = 0
+    for i in range(0, len(A)):
+        res = res + A[i][i]
+    return res
+
+# test
+print(6 == traza(A))
 #%% ejercicio 6 
 def traspuesta(A):
-    dFilas=len(A)
-    dColumnas=len(A[0])
-    T = np.zeros(dFilas,dColumnas)
-    for f in range(0,dFilas):
-        for c in range(0,dColumnas):
-            T[c][f] = A[f][c]
-    return T
+    res = np.zeros(A.shape)
+    for i in range(A.shape[0]):
+        for j in range(A.shape[1]):
+            res[i][j] = A[j][i]
+    return res
 
-#%% 
+print(traspuesta(A))
+#%% ejercicio 7
+def esSimetrica(A):
+    return A==traspuesta(A)
+
+#test
+print(esSimetrica(A_simetrica))
+#%% ejercicio 8
+
