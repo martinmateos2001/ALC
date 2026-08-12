@@ -153,6 +153,21 @@ x = np.array([1,1,1])
 v = np.array([6,6,6])
 print(v == calcularAx(A,x))
 
+# %% ejercicio 9
+# ojo, la Fila 1 es la posicion 0 y así sucesivamente.
+def intercambiarFilas(A, i, j):
+    vectorI = np.array(A[i-1])
+    vectorJ= np.array(A[j-1])
 
+    A[i-1] = vectorJ
+    A[j-1] = vectorI
 
+# test
+B = np.array([
+    [1,1],
+    [2,2]
+])
+
+intercambiarFilas(B,1,2)
+print(B)
 # %%
