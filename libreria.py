@@ -170,4 +170,80 @@ B = np.array([
 
 intercambiarFilas(B,1,2)
 print(B)
+# %% ejercicio 10
+def sumar_fila_numero(A, i, j, s):
+    A[i-1] = A[i-1] + s * A[j-1]
+
+#test
+A = np.array([
+    [1,2],
+    [3,4]
+])
+
+sumar_fila_numero(A, 1, 2, 3)
+print(A)
+
+# %% 11
+def esDiagonalmenteDominante(A):
+    for i in range(A.shape[0]):
+        s = 0
+        for v in A[i]:
+            if not v==A[i][i]:
+                s = s + abs(v)
+        if abs(A[i][i]) <= s:
+            return False
+    return True
+
+# test
+A = np.array([
+    [5,-2],
+    [-1,3]
+])
+print(esDiagonalmenteDominante(A) == True)
+
+A = np.array([
+    [1,3],
+    [-2,4]
+])
+print(esDiagonalmenteDominante(A) == False)
+
+A = np.array([
+    [1,3],
+    [-2,-4]
+])
+print(esDiagonalmenteDominante(A) == False)
+
+A = np.array([
+    [2,-1,1],
+    [-2,-4,1],
+    [1,1,3]
+])
+print(esDiagonalmenteDominante(A) == False)
+
+# %% ejercicio 12
+
+'''
+v = [1,0,0]
+
+res=[
+[1,0,0],
+[0,1,0],
+[0,0,1]
+]
+'''
+def matrizCirculante(v):
+    n = len(v)
+    res = np.zeros((n,n))
+
+    for i in range(0, n):
+        for j in range(0, n):
+            p = (j+i)%n # en la posicion j+i de res va el valor del vector en j pero como se pasa le puse el resto.
+            res[i][p] = v[j]
+
+    return res
+
+# test
+v = np.array([1,0,0])
+print(matrizCirculante(v))
+
 # %%
