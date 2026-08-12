@@ -270,10 +270,18 @@ def fibonacci(n):
     else:
         return fibonacci(n-1) + fibonacci(n-2)
 
-# test
-res_fibo = [0, 1, 1, 2, 3, 5, 8, 13, 21]
-l_fibo=[fibonacci(n) for n in range(len(res_fibo))]
+# test fibonacci
+res_fibo = [1, 1, 2, 3, 5, 8, 13, 21]
+ls_fibo=[fibonacci(n) for n in range(1, len(res_fibo)+1)]
 
-print(res_fibo == l_fibo)
+print(res_fibo == ls_fibo)
 
+# número áureo
+def numeroAureo(n):
+    return fibonacci(n+1)/fibonacci(n)
+
+res_aureo = [2, 3/2, 5/3, 8/5, 13/8, 21/13]
+ls_aureo = [numeroAureo(n) for n in range(2, len(res_aureo)+2)]
+print(res_aureo, ls_aureo)
+print(res_aureo == ls_aureo)
 # %%
