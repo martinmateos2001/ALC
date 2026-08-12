@@ -246,4 +246,34 @@ def matrizCirculante(v):
 v = np.array([1,0,0])
 print(matrizCirculante(v))
 
+# %% ejercicio 13
+def matrizVandermonde(v):
+    n = len(v)
+    res = np.zeros((n,n))
+
+    for i in range(0,n):
+        res[i] = v ** i
+
+    return res
+
+# test
+v = np.array([1,2,3])
+
+print(matrizVandermonde(v))
+# %% ejercicio 14
+
+def fibonacci(n):
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)
+
+# test
+res_fibo = [0, 1, 1, 2, 3, 5, 8, 13, 21]
+l_fibo=[fibonacci(n) for n in range(len(res_fibo))]
+
+print(res_fibo == l_fibo)
+
 # %%
