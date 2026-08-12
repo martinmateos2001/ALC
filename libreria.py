@@ -284,4 +284,13 @@ res_aureo = [2, 3/2, 5/3, 8/5, 13/8, 21/13]
 ls_aureo = [numeroAureo(n) for n in range(2, len(res_aureo)+2)]
 print(res_aureo, ls_aureo)
 print(res_aureo == ls_aureo)
+
+# %% ejercicio 15
+def matrizFibonacci(n):
+    ls_fibo = [fibonacci(n) for n in range(0, n*n)]
+    res = np.array(ls_fibo).reshape(n,n)
+    return res
+
+print([matrizFibonacci(n) for n in range(2, 5)])
+
 # %%
