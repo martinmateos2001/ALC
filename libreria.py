@@ -285,7 +285,7 @@ ls_aureo = [numeroAureo(n) for n in range(2, len(res_aureo)+2)]
 print(res_aureo, ls_aureo)
 print(res_aureo == ls_aureo)
 
-# %% ejercicio 15
+# %% ejercicio 15 - 16 es igual pero con otra sucesión
 def matrizFibonacci(n):
     ls_fibo = [fibonacci(n) for n in range(0, n*n)]
     res = np.array(ls_fibo).reshape(n,n)
