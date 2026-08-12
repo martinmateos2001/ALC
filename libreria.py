@@ -133,4 +133,26 @@ def esSimetrica(A):
 #test
 print(esSimetrica(A_simetrica))
 #%% ejercicio 8
+# A cada fila le hago producto punto con el vector de entrada y lo agrego. Uso el metodo de numpy dot.
+# se indica que los vectores que componen la matriz con el vector a multiplicar tienen la misma dimensión.
+def calcularAx(A, x):
+    cantVectores = A.shape[0]
+    dimVectores = A.shape[1]
+    res = np.zeros((dimVectores,1))
+    for i in range(0, cantVectores):
+        res[i] = res[i] + np.dot(A[i], x)
+    return res
 
+# test
+A = np.array([
+    [1,2,3],
+    [1,2,3],
+    [1,2,3]
+])
+x = np.array([1,1,1])
+v = np.array([6,6,6])
+print(v == calcularAx(A,x))
+
+
+
+# %%
