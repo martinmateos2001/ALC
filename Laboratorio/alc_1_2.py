@@ -28,7 +28,7 @@ def abs(x):
 def error(x,y):
     x = np.float64(x)
     y = np.float64(y)
-    return abs(y-x)
+    return (abs(y-x))
 '''
 Recibe dos numeros x e y, y calcula el error de aproximar x usando y en float64
 '''
@@ -49,7 +49,9 @@ def matricesIguales(A,B):
     else:
         for i in range(0, A.shape[0]):
             for j in range(0, A.shape[1]):
-                if not(A[i][j] == B[i][j]):
+                a = A[i][j]
+                b = B[i][j]
+                if (error(a,b) > error_relativo(a,b) or error(a,b) > error_relativo(b,a)): # Si son muy iguales entonces el error(a, b) simpre es menor que el error relativo de ambos.
                     return False
         return True
 '''
