@@ -1,22 +1,38 @@
 import numpy as np
 # --- Laboratorio 1 ---
-def error(x,y):
-    return 
 
+def abs(x):
+    if x>=0:
+        return x
+    else:
+        return -x
+    
+def error(x,y):
+    x = np.float64(x)
+    y = np.float64(y)
+    return abs(y-x)
+
+def diferenciasFloat64(x,y):
+    x_64 = np.float64(x)
+    y_64 = np.float64(y)
+    print(f'x={x}\nfloat64(x) = {x_64}\ny={y}\nfloat64(y)={y_64}\nabs(y-x)={abs(y-x)}\nerror(x,y)={error(x,y)}')
+
+diferenciasFloat64(1, 1.1)
 '''
 Recibe dos numeros x e y, y calcula el error de aproximar x usando y en float64
 '''
 
 def error_relativo(x,y):
-    return 1
-
+    y = np.float64(y)
+    return error(x,y)/abs(y)
 '''
 Recibe dos numeros x e y, y calcula el error relativo de aproximar x usando y en float649
 '''
 
 def matricesIguales(A,B):
-    return True
-
+    A = np.array(A, dtype=np.float64)
+    B = np.array(B, dtype=np.float64)
+    return A == B
 '''
 Devuelve True si ambas matrices son iguales y False en otro caso.
 Considerar que las matrices pueden tener distintas dimensiones, ademas de distintos valores.
