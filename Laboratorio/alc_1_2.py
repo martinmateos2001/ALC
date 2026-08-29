@@ -63,7 +63,8 @@ Considerar que las matrices pueden tener distintas dimensiones, ademas de distin
 
 # --- Laboratorio 2 ---
 def rota(theta):
-    return None
+    res = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
+    return res
 """
 Recibe un ángulo theta y retorna una matriz de 2x2 que rota un vector dado en un ángulo theta
 """
