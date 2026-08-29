@@ -21,9 +21,9 @@ Operaciones de slicing
 
 def abs(x):
     if x>=0:
-        return x
+        return np.float64(x)
     else:
-        return -x
+        return np.float64(-x)
     
 def error(x,y):
     x = np.float64(x)
@@ -34,10 +34,11 @@ Recibe dos numeros x e y, y calcula el error de aproximar x usando y en float64
 '''
 
 def error_relativo(x,y):
-    y = np.float64(y)
-    return error(x,y)/abs(x)
+    if not(x == 0):
+        return error(x,y)/abs(x)
+    return error(x,y)
 '''
-Recibe dos numeros x e y, y calcula el error relativo de aproximar x usando y en float649
+Recibe dos numeros x e y, y calcula el error relativo de aproximar x usando y en float64
 '''
 
 def matricesIguales(A,B):
@@ -51,7 +52,7 @@ def matricesIguales(A,B):
             for j in range(0, A.shape[1]):
                 a = A[i][j]
                 b = B[i][j]
-                if (error(a,b) > error_relativo(a,b) or error(a,b) > error_relativo(b,a)): # Si son muy iguales entonces el error(a, b) simpre es menor que el error relativo de ambos.
+                if (error(a,b) >= error_relativo(a,b) or error(a,b) >= error_relativo(b,a)): # Si son muy iguales entonces el error(a, b) simpre es menor que el error relativo de ambos.
                     return False
         return True
 '''
