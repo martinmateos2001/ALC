@@ -1,4 +1,22 @@
 import numpy as np
+
+''' Funciones utilizables de numpy
+np.cos()
+np.sen()
+np.eye()
+np.shape()
+np.zeros()
+np.copy()
+np.ones()
+np.ndim()
+np.arrange()
+np.linspace()
+np.array()
+np.reshape()
+Funciones del submódulo np.random que sirvan para generar números pseudo-aleatorios.
+Operaciones de slicing
+'''
+
 # --- Laboratorio 1 ---
 
 def abs(x):
