@@ -31,7 +31,8 @@ assert(not matricesIguales(np.array([[1,2],[3,4]]).T,np.array([[1,2],[3,4]])))
 # Tests para rota
 assert (np.allclose(rota(0) , np.eye(2))) 
 assert (np.allclose(rota(np.pi/2), np.array([[0, -1], [1, 0]]))) 
-assert (np.allclose(rota(np.pi), np.array([-1, 0], [0, -1]))) # Tests para escala
+assert (np.allclose(rota(np.pi), np.array([[-1, 0], [0, -1]]))) 
+# Tests para escala
 assert (np.allclose(escala([2,3]), np.array([[2, 0], [0,3]]))) 
 assert (np.allclose(escala([1, 1, 1]), np.eye(3))) 
 assert ( np.allclose(escala([0.5,0.25] ), np.array([[0.5, 0], [0,0.25]])) )
