@@ -43,7 +43,15 @@ Recibe dos numeros x e y, y calcula el error relativo de aproximar x usando y en
 def matricesIguales(A,B):
     A = np.array(A, dtype=np.float64)
     B = np.array(B, dtype=np.float64)
-    return A == B
+    # Comparo las dimensiones.
+    if not(A.shape == B.shape):
+        return False
+    else:
+        for i in range(0, A.shape[0]):
+            for j in range(0, A.shape[1]):
+                if not(A[i][j] == B[i][j]):
+                    return False
+        return True
 '''
 Devuelve True si ambas matrices son iguales y False en otro caso.
 Considerar que las matrices pueden tener distintas dimensiones, ademas de distintos valores.
