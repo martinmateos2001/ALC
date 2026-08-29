@@ -8,7 +8,7 @@ def diferenciasFloat64(x,y):
     x_64 = np.float64(x)
     y_64 = np.float64(y)
     print(f'x={x}\nfloat64(x) = {x_64}\ny={y}\nfloat64(y)={y_64}\nabs(y-x)={abs(y-x)}\nerror(x,y)={error(x,y)}')
-
+    print(f'Error Relativo({x},{y})= {error_relativo(x,y)} = {0.1/1.1}')
 diferenciasFloat64(1, 1.1)
 
 def sonIguales(x,y,atol=1e-08): 
@@ -22,7 +22,7 @@ assert(sonIguales(np.float16(1), np.float16(1) + np.finfo('float16').eps, atol=1
 assert(np.allclose(error_relativo(1,1.1), 0.1))
 assert(np.allclose(error_relativo(2,1),0.5))
 assert(np.allclose(error_relativo(1,1),0))
-assert(np.allclose(error_relativo(1,1),2))
+assert(np.allclose(error_relativo(1,-1),2))
 assert(matricesIguales(np.diag([1,1]),np.eye(2)))
 assert(matricesIguales(np.linalg.inv(np.array([[1,2],[3,4]]))@np.array([[1,2],[3,4]]),np.eye(2)))
 assert(not matricesIguales(np.array([[1,2],[3,4]]).T,np.array([[1,2],[3,4]])))

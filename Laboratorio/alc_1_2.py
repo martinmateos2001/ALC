@@ -17,7 +17,7 @@ Recibe dos numeros x e y, y calcula el error de aproximar x usando y en float64
 
 def error_relativo(x,y):
     y = np.float64(y)
-    return error(x,y)/abs(y)
+    return error(x,y)/abs(x)
 '''
 Recibe dos numeros x e y, y calcula el error relativo de aproximar x usando y en float649
 '''
