@@ -1,3 +1,5 @@
+from tkinter.messagebox import RETRY
+
 import numpy as np
 
 ''' Funciones utilizables de numpy
@@ -70,14 +72,37 @@ Recibe un ángulo theta y retorna una matriz de 2x2 que rota un vector dado en u
 """
 
 def escala(s):
-    return None
+    res = np.zeros((len(s), len(s)))
+    for i in range(0,len(s)):
+        res[i][i] = s[i]
+    return res
 '''
 Recibe una tira de números s y retorna una matriz cuadrada de n x n, donde n es el tamaño de s.
 La matriz escala la componente i de un vector de Rn en un factor s[i]
 '''
+def filaXcolumna(fila, columna, A, B):
+    res = 0
+    for k in range(A.shape[1]):
+        res = res + A[fila][k]*B[k][columna]
+    return res
+
+def producto(A, B):
+    if not(A.shape[1] == B.shape[0]):
+        return None
+    else:
+        res = np.zeros((A.shape[0], B.shape[1]))
+        for i in range(0, A.shape[0]):
+            for j in range(0, B.shape[1]):  
+                res[i][j] = filaXcolumna(i, j, A, B)
+        return res
+
 
 def rota_y_escala(theta, s):
-    return None
+    R = rota(theta)
+    S = escala(s)
+    res = producto(S, R)
+    return res
+
 '''
 Recibe un ángulo theta y una tira de numeros s, y retorna una matriz 2x2 que rota el vector en un ángulo theta y luego los escala en un factor s.
 '''

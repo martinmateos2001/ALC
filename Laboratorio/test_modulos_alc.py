@@ -36,9 +36,21 @@ assert (np.allclose(rota(np.pi), np.array([[-1, 0], [0, -1]])))
 assert (np.allclose(escala([2,3]), np.array([[2, 0], [0,3]]))) 
 assert (np.allclose(escala([1, 1, 1]), np.eye(3))) 
 assert ( np.allclose(escala([0.5,0.25] ), np.array([[0.5, 0], [0,0.25]])) )
-# Tests para rota_y_escala 
-assert(np.allclose(rota_y_escala (0, [2,3]), np. array([[2, 0], [0, 3]]))) 
-assert (np.allclose(rota_y_escala(np.pi /2, [1, 1]), np.array([[0, 1], [1,0]]))) 
+
+# Tests filaXcolumna
+A=np.array([[1,2], 
+            [3,4]])
+
+B=np.array([[1,1], 
+            [2,2]])
+assert(filaXcolumna(1,1, A, B), 5)
+
+# Tests para rota_y_escala --- ESTAN MAL COPIADOS :(
+print(rota_y_escala (0, [2,3]))
+assert(np.allclose(rota_y_escala (0, [2,3]), np.array([[2, 0], [0, 3]]))) 
+
+print('rota_y_escala(np.pi /2, [1, 1]) =', rota_y_escala(np.pi /2, [1, 1]))
+assert (np.allclose(rota_y_escala(np.pi /2, [1, 1]), np.array([[0, 1], [-1,0]]))) 
 assert (np.allclose(rota_y_escala(np.pi, [2, 2]), np.array([-2,0], [0,-2])))
 # Tests para afin 
 assert (np.allclose(afin(0, [1,1], [1,2]), np.array([[1, 0, 1], [0,1,2], [0,0,1]])))
