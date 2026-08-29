@@ -1,7 +1,7 @@
 import numpy as np
 # --- Laboratorio 1 ---
 def error(x,y):
-    return 1
+    return 
 
 '''
 Recibe dos numeros x e y, y calcula el error de aproximar x usando y en float64
