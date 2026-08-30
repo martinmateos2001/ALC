@@ -1,3 +1,4 @@
+from math import prod
 from tkinter.messagebox import RETRY
 
 import numpy as np
@@ -80,6 +81,7 @@ def escala(s):
 Recibe una tira de números s y retorna una matriz cuadrada de n x n, donde n es el tamaño de s.
 La matriz escala la componente i de un vector de Rn en un factor s[i]
 '''
+
 def filaXcolumna(fila, columna, A, B):
     res = 0
     for k in range(A.shape[1]):
@@ -102,20 +104,38 @@ def rota_y_escala(theta, s):
     S = escala(s)
     res = producto(S, R)
     return res
-
 '''
 Recibe un ángulo theta y una tira de numeros s, y retorna una matriz 2x2 que rota el vector en un ángulo theta y luego los escala en un factor s.
 '''
+def suma(A,B):
+    if not(A.shape == B.shape):
+        return None
+    res = np.zeros(A.shape)
+    for i in range(A.shape[0]):
+        for j in range(A.shape[1]):
+            res[i][j] = A[i][j] + B[i][j]
+    return res
 
 def afin(theta, s, b):
-    return None
+    res = np.zeros((3,3))
+    sr = rota_y_escala(theta, s)
+    for i in range(2):
+        for j in range(2):
+            res[i][j] = sr[i][j]
+        res[i][2] = b[i]
+    res[2][2]= 1    
+    return res
 '''
 Recibe un angulo theta, una tira de numeros s (en R2) y un vector b en R2.
 Retorna una matriz 3x3 que rota el vector en un angulo theta, luego lo escala en un factor de s y por ultimo lo mueve en un factor fijo b. 
 '''
 
 def trans_afin(v, theta, s, b):
-    return None
+    tl = afin(theta, s, b)
+    x = tl[0][0]*v[0] + tl[0][1]*v[1] + tl[0][2]
+    y = tl[1][0]*v[0] + tl[1][1]*v[1] + tl[1][2]
+    res = np.array([x, y])
+    return res
 '''
 Recibe un vector v en R2, un angulo theta, una tira de numeros s en R2, y un vector b en R2.
 Retorna el vector w resultante de aplicar la transformacion afin a v.
