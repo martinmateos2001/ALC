@@ -1,6 +1,3 @@
-from math import prod
-from tkinter.messagebox import RETRY
-
 import numpy as np
 
 ''' Funciones utilizables de numpy
