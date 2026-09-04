@@ -187,3 +187,36 @@ def normaMatMC(A,q,p,Np):
 Devuelve la norma ||A||\_{q,p} y el vector x en el cual se alcanza el maximo.
 '''
 
+def normaExacta(A, p=[1,'inf']):
+    filas = A.shape[0]
+    cols = A.shape[1]
+    res = 0
+
+    # Calculo la norma 1
+    if(p == 1 and isinstance(p, (int, float))):
+        for i in range(cols):
+            s = 0
+            for f in A:
+                s = s + abs(f[i])
+            if(s > res):
+                res = s
+        return res
+
+    # calculo la norma infinito
+    if(p=='inf' and isinstance(p, str)):
+        for j in range(filas):
+            s = 0
+            for e in A[j]:
+                s = s + abs(e)
+            if(s > res):
+                res = s
+        return res
+
+    return None
+def condMC(A, p):
+    invA = np.linalg.inv(A)
+    res = normaMatMC(A, p, p, 10000)[0] * normaMatMC(invA, p, p, 10000)[0]
+    return res
+'''
+Devuelve el numero de condicion de A usando la norma inducida p.
+'''

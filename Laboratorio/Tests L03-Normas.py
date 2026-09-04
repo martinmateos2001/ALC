@@ -51,14 +51,14 @@ A = np.array([[1,1],[0,1]])
 A_ = np.linalg.solve(A,np.eye(A.shape[0]))
 normaA = normaMatMC(A,2,2,10000)
 normaA_ = normaMatMC(A_,2,2,10000)
-condA = condMC(A,2,10000)
+condA = condMC(A,2)
 assert(np.allclose(normaA[0]*normaA_[0],condA,atol=1e-3))
 
 A = np.array([[3,2],[4,1]])
 A_ = np.linalg.solve(A,np.eye(A.shape[0]))
 normaA = normaMatMC(A,2,2,10000)
 normaA_ = normaMatMC(A_,2,2,10000)
-condA = condMC(A,2,10000)
+condA = condMC(A,2)
 assert(np.allclose(normaA[0]*normaA_[0],condA,atol=1e-3))
 
 # Test condExacta
