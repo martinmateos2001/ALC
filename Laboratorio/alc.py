@@ -15,6 +15,8 @@ np.array()
 np.reshape()
 Funciones del submódulo np.random que sirvan para generar números pseudo-aleatorios.
 Operaciones de slicing
+@ para multiplicar.
+np.isclose().
 '''
 
 # --- Laboratorio 1 ---
@@ -139,3 +141,49 @@ Retorna el vector w resultante de aplicar la transformacion afin a v.
 '''
 
 # --- Laboratorio 3 ---
+def norma(x,p):
+    res = 0
+    if(isinstance(p, (int,float))):
+        if (p == 1):
+            for e in x:
+                res = res + abs(e)
+        if(p > 1):
+            suma = 0
+            for e in x:
+                suma = suma + abs(e)**p
+            res = suma**(1/p)
+    if(p =='inf' and isinstance(p, str)):
+        ls = [abs(x[i]) for i in range(0, len(x))]
+        res = max(ls)
+    return res
+    
+def normaliza(X, p):
+    res = []
+    for v in X:
+        modulo = norma(v, p)
+        w = []
+        for e in v:
+            w.append(e/modulo)
+        res.append(w)
+    return res
+'''
+Recibe X, una lista de vectores no vacios, y un escalar p. Devuelve una lista donde cada elemento corresponde a normalizar los elementos de X con la norma p.
+'''
+
+def normaMatMC(A,q,p,Np):
+    dim = A.shape[1]
+    X = np.random.uniform(-1, 1, size=(Np, dim)) # Np arreglos de dimension dim
+    X_normalizdo = normaliza(X,p)
+    maximo = -1
+    x = None
+    for i in range(Np):
+        Ax=A@X_normalizdo[i]
+        normAx = norma(Ax, q)
+        if (normAx > maximo):
+            maximo = normAx
+            x = X_normalizdo[i] 
+    return maximo, x
+'''
+Devuelve la norma ||A||\_{q,p} y el vector x en el cual se alcanza el maximo.
+'''
+

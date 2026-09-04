@@ -1,10 +1,15 @@
 # Tests L03-Normas
+from matplotlib.pylab import norm
 
+from alc import *
+import numpy as np
 # Tests norma
 assert(np.allclose(norma(np.array([1,1]),2),np.sqrt(2)))
 assert(np.allclose(norma(np.array([1]*10),2),np.sqrt(10)))
 assert(norma(np.random.rand(10),2)<=np.sqrt(10))
 assert(norma(np.random.rand(10),2)>=0)
+assert(norma(np.array([1,2,3]), 5), np.linalg.norm(np.array([1,2,3]), ord=5))
+assert(np.allclose(norma(np.array([-5,2,4]), 'inf'), np.linalg.norm(np.array([-5,2,4]), ord=np.inf)))
 
 # Tests normaliza
 # Tests normaliza
