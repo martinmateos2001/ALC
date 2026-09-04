@@ -137,3 +137,5 @@ def trans_afin(v, theta, s, b):
 Recibe un vector v en R2, un angulo theta, una tira de numeros s en R2, y un vector b en R2.
 Retorna el vector w resultante de aplicar la transformacion afin a v.
 '''
+
+# --- Laboratorio 3 ---
