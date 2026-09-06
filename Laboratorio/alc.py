@@ -173,15 +173,15 @@ Recibe X, una lista de vectores no vacios, y un escalar p. Devuelve una lista do
 def normaMatMC(A,q,p,Np):
     dim = A.shape[1]
     X = np.random.uniform(-1, 1, size=(Np, dim)) # Np arreglos de dimension dim
-    X_normalizdo = normaliza(X,p)
+    X_normalizado = normaliza(X,p)
     maximo = -1
     x = None
-    for i in range(Np):
-        Ax=A@X_normalizdo[i]
+    for v in X_normalizado:
+        Ax=A@v
         normAx = norma(Ax, q)
         if (normAx > maximo):
             maximo = normAx
-            x = X_normalizdo[i] 
+            x = v 
     return maximo, x
 '''
 Devuelve la norma ||A||\_{q,p} y el vector x en el cual se alcanza el maximo.
@@ -211,12 +211,23 @@ def normaExacta(A, p=[1,'inf']):
             if(s > res):
                 res = s
         return res
-
+    if(isinstance(p, (tuple, list))):
+        res = [normaExacta(A, p[0]), normaExacta(A,p[1])]
+        return res
     return None
+
 def condMC(A, p):
     invA = np.linalg.inv(A)
     res = normaMatMC(A, p, p, 10000)[0] * normaMatMC(invA, p, p, 10000)[0]
     return res
 '''
 Devuelve el numero de condicion de A usando la norma inducida p.
+'''
+
+def condExacto(A, p):
+    invA = np.linalg.inv(A)
+    res = normaExacta(A,p) * normaExacta(invA, p) 
+    return res
+'''
+Que devuelve el numero de condicion de A a partir de la formula de la ecuacion (1) usando la norma p.
 '''
