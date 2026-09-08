@@ -155,7 +155,7 @@ def norma(x,p):
     if(p =='inf' and isinstance(p, str)):
         ls = [abs(x[i]) for i in range(0, len(x))]
         res = max(ls)
-    return res
+    return np.float64(res)
     
 def normaliza(X, p):
     res = []
@@ -165,18 +165,20 @@ def normaliza(X, p):
         for e in v:
             w.append(e/modulo)
         res.append(w)
-    return res
+    return np.array(res, dtype=np.float64)
 '''
 Recibe X, una lista de vectores no vacios, y un escalar p. Devuelve una lista donde cada elemento corresponde a normalizar los elementos de X con la norma p.
 '''
 
 def normaMatMC(A,q,p,Np):
+    A = np.array(A, dtype=np.float64)
     dim = A.shape[1]
     X = np.random.uniform(-1, 1, size=(Np, dim)) # Np arreglos de dimension dim
     X_normalizado = normaliza(X,p)
+    X_normalizado_np = np.array(X_normalizado, dtype=np.float64)
     maximo = -1
     x = None
-    for v in X_normalizado:
+    for v in X_normalizado_np:
         Ax=A@v
         normAx = norma(Ax, q)
         if (normAx > maximo):
