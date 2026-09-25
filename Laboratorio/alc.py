@@ -270,7 +270,7 @@ def calculaLU(A):
                 ops += 1
                 L[i][j]= m
                 Ac[i] = Ac[i] - m * Ac[j]
-                ops += n
+                ops += 2*n # n multiplicaciones + n restas.
             i+=1
         j+=1
     return L, Ac, ops
