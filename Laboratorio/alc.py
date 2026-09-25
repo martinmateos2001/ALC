@@ -249,11 +249,13 @@ def esTriangularSuperior(A:np.array) -> bool:
 
     
 def calculaLU(A):
+    if(A is None):
+        return None, None, 0
     # dimensiones
     m = A.shape[0]
     n= A.shape[1]
     if( m!=n):
-        return
+        return None, None, 0
     Ac = A.copy()
     # Identidad para crear L
     L = np.eye(n)
@@ -264,13 +266,15 @@ def calculaLU(A):
         if(Ac[j][j] == 0):
             return None, None, 0
         i=j+1
+        
         while(i<n):
             if(Ac[i][j] != 0):
                 m = Ac[i][j] / Ac[j][j]
                 ops += 1
                 L[i][j]= m
-                Ac[i] = Ac[i] - m * Ac[j]
-                ops += 2*n # n multiplicaciones + n restas.
+                Ac[i][j]=0.0 # asigno para no contar una operacion.
+                Ac[i][j+1:] = Ac[i][j+1:] - m * Ac[j][j+1:]
+                ops += 2*(n-(j+1)) # resto los que cambian, de la columna j+1 para atras son ceros.
             i+=1
         j+=1
     return L, Ac, ops
