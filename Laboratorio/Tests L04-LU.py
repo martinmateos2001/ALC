@@ -1,4 +1,4 @@
-from moduloALC import calculaLU, res_tri, inversa, calculaLDV, esSDP
+from alc import calculaLU, res_tri, inversa, calculaLDV, esSDP
 import numpy as np
 
 # TESTS L04-LU
@@ -33,6 +33,7 @@ assert(not np.allclose(L,L0))
 assert(not np.allclose(U,U0))
 assert(np.allclose(L,L0,atol=1e-3))
 assert(np.allclose(U,U0,atol=1e-3))
+print(nops)
 assert(nops == 13)
 
 L0 = np.array([[1,0,0],

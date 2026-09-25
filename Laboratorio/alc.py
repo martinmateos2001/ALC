@@ -1,4 +1,5 @@
 import numpy as np
+from pandas import pivot
 
 ''' Funciones utilizables de numpy
 np.cos()
@@ -234,5 +235,54 @@ def condExacto(A, p):
 Que devuelve el numero de condicion de A a partir de la formula de la ecuacion (1) usando la norma p.
 '''
 
+# --- Laboratorio 4 ---
+def esTriangularSuperior(A:np.array) -> bool:
+    n = A.shape[0]
+    for i in range(1,n-1):
+        j = 0
+        while j < i:
+            if(A[i][j] != 0):
+                return False
+            j+=1
+    return True
+
+
+    
 def calculaLU(A):
+    # dimensiones
+    m = A.shape[0]
+    n= A.shape[1]
+    if( m!=n):
+        return
+    Ac = A.copy()
+    # Identidad para crear L
+    L = np.eye(n)
+    ops = 0
+    j = 0
+    while(j < n-1):
+        # si el pivote es nulo no puedo operar
+        if(Ac[j][j] == 0):
+            return None, None, 0
+        i=j+1
+        while(i<n):
+            if(Ac[i][j] != 0):
+                m = Ac[i][j] / Ac[j][j]
+                ops += 1
+                L[i][j]= m
+                Ac[i] = Ac[i] - m * Ac[j]
+                ops += n
+            i+=1
+        j+=1
+    return L, Ac, ops
+
+def res_tri(L,b,inferior=True):
+    return
+
+def inversa(A):
+    return
+
+def calculaLDV(A):
+    return
+
+def esSDP(A):
     return
