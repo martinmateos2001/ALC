@@ -233,3 +233,6 @@ def condExacto(A, p):
 '''
 Que devuelve el numero de condicion de A a partir de la formula de la ecuacion (1) usando la norma p.
 '''
+
+def calculaLU(A):
+    return

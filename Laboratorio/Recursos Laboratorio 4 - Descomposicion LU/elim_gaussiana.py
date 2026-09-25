@@ -16,7 +16,7 @@ def elim_gaussiana(A):
         return
     
     ## desde aqui -- CODIGO A COMPLETAR
-
+    
 
 
 
