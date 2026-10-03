@@ -280,7 +280,23 @@ def calculaLU(A):
     return L, Ac, ops
 
 def res_tri(L,b,inferior=True):
-    return
+    n = L.shape[0]
+    X = np.zeros(n)
+    if(inferior):
+        X[0] = b[0]
+        for i in range(1, n):
+            f = L[i, 0:i]
+            X[i] = b[i] - (f @ X[0:i]) 
+        return X
+    
+    else:
+        X[n-1] = b[-1] / L[n-1, n-1]
+        i=n-2
+        while i > -1:
+            f = L[i, i+1:]
+            X[i] = np.float64((b[i] -(f @ X[i+1:n])) / L[i,i])
+            i-=1
+        return X  
 
 def inversa(A):
     return

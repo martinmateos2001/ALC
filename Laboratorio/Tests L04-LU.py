@@ -65,6 +65,7 @@ A = np.array([[1,0,0],
               [1,1,1]])
 
 b = np.array([1,1,1])
+
 assert(np.allclose(res_tri(A,b),np.array([1,0,0])))
 
 b = np.array([0,1,0])
