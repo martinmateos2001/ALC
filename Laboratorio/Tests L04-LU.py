@@ -79,6 +79,7 @@ assert(np.allclose(res_tri(A,b,inferior=False),np.array([-1,1,-1])))
 
 A = np.array([[3,2,1],[0,2,1],[0,0,1]])
 b = np.array([3,2,1])
+print(res_tri(A,b,inferior=False))
 assert(np.allclose(res_tri(A,b,inferior=False),np.array([1/3,1/2,1])))
 
 A = np.array([[1,-1,1],[0,1,-1],[0,0,1]])

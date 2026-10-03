@@ -1,3 +1,5 @@
+from math import prod
+
 import numpy as np
 from pandas import pivot
 
@@ -236,6 +238,7 @@ Que devuelve el numero de condicion de A a partir de la formula de la ecuacion (
 '''
 
 # --- Laboratorio 4 ---
+# NO SE PUEDE USAR @
 def esTriangularSuperior(A:np.array) -> bool:
     n = A.shape[0]
     for i in range(1,n-1):
@@ -286,7 +289,10 @@ def res_tri(L,b,inferior=True):
         X[0] = b[0]
         for i in range(1, n):
             f = L[i, 0:i]
-            X[i] = b[i] - (f @ X[0:i]) 
+            s = 0
+            for j in range(0, len(f)):
+                s += f[j]*X[j]
+            X[i] = b[i] - s
         return X
     
     else:
@@ -294,7 +300,10 @@ def res_tri(L,b,inferior=True):
         i=n-2
         while i > -1:
             f = L[i, i+1:]
-            X[i] = np.float64((b[i] -(f @ X[i+1:n])) / L[i,i])
+            s = 0
+            for j in range(i+1, n):
+                s += L[i, j] * X[j]
+            X[i] = (b[i] - s) / L[i,i]
             i-=1
         return X  
 
