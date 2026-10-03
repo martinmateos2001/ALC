@@ -1,7 +1,6 @@
 from math import prod
 
 import numpy as np
-from pandas import pivot
 
 ''' Funciones utilizables de numpy
 np.cos()
@@ -305,10 +304,36 @@ def res_tri(L,b,inferior=True):
                 s += L[i, j] * X[j]
             X[i] = (b[i] - s) / L[i,i]
             i-=1
-        return X  
+        return X
+    
+def traspuesta(A):
+    res = np.zeros(A.shape)
+    for i in range(A.shape[0]):
+        for j in range(A.shape[1]):
+            res[i][j] = A[j][i]
+    return res
+
 
 def inversa(A):
-    return
+    
+    LU = calculaLU(A)
+    n = A.shape[0]
+    L = LU[0]
+    U = LU[1]
+    for i in range(0, n):
+        if(U[i,i] == 0):
+            return None
+    #LY = I -> UX = Y -> return X
+    Y = np.zeros((n,n))
+    I = np.eye(n)
+    for i in range(0,n):
+        y = res_tri(L,I[i], True)
+        Y[i] += y
+    X = np.zeros((n,n))
+    for i in range(0,n):
+        x = res_tri(U,Y[i], False)
+        X[i] += x 
+    return traspuesta(X)
 
 def calculaLDV(A):
     return
