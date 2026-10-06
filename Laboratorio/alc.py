@@ -1,5 +1,3 @@
-from math import prod
-
 import numpy as np
 
 ''' Funciones utilizables de numpy
@@ -336,7 +334,111 @@ def inversa(A):
     return traspuesta(X)
 
 def calculaLDV(A):
-    return
+    LU = calculaLU(A)
+    L = LU[0]
+    U = LU[1]
+    Uc = np.copy(U)
+    D = np.zeros(A.shape)
+    n = A.shape[0]
+    for i in range(0, n):
+        D[i,i] = Uc[i,i]
+        for j in range(i, n):
+            if(Uc[i,j] != 0):
+                Uc[i,j] = Uc[i,j]/D[i,i]
+    return L, D, Uc
 
-def esSDP(A):
+def esSDP(A, atol=1e-8):
+    n=A.shape[0]
+    if(n != A.shape[1]):
+        return False
+    L,D,V= calculaLDV(A)
+    for i in range(0,n):
+        if(D[i,i] <= 0):
+            return False
+        for j in range(0, i+1):
+            if not (np.isclose(L[i,j], V[j,i], atol)):
+                return False
+    return True
+
+# --- Laboratorio 5 ---
+def prod_vec(x,y):
+    ops = 0
+    if(len(x) != len(y)):
+        return None, ops
+    res = 0
+    for i in range(0, len(x)):
+        if(x[i] != 0 and y[i]!=0):
+            res += x[i]*y[i]
+            ops += 1
+    return res, ops
+
+
+def QR_con_GS(A, tol=1e-12, retorna_nops=False):
+    ops = 0
+    n = A.shape[0]
+    At = traspuesta(A) # Cada fila es un vector.
+    # Cada fila de X es un vector
+    nor = norma(At[0], 2)
+    x = At[0] / nor
+    for i in range(0,n):
+        if(abs(x[i]) <= tol):
+            x[i] = 0
+    Qt = [x]
+    R = np.zeros(A.shape) 
+    R[0,0] = nor
+    for i in range(1, n):
+        v = At[i]
+        j = i-1
+        while j > -1:
+            rji= prod_vec(Qt[j],At[i])[0]
+            R[j,i] = rji
+            v = v - (rji * Qt[j])
+            j -= 1
+        nor = norma(v, 2)
+        R[i,i] = nor
+        v_nor = v / nor
+        for j in range(0,n):
+            if(abs(v_nor[j]) <= tol):
+                v_nor[j] = 0
+        Qt.append(v_nor) 
+    Q = traspuesta(np.array(Qt))
+    if(retorna_nops):
+        return Q, R, ops 
+    return Q, R
+"""
+A una matriz de n x n 
+tol la tolerancia con la que se filtran elementos nulos en R
+retorna_nops permite (opcionalmente) retornar el numero de operaciones realizado
+retorna matrices Q y R calculadas con Gram Schmidt (y como tercer argumento opcional, el numero de operaciones).
+Si la matriz A no es de n x n, debe retornar None
+"""
+
+def QR_con_HH(A,tol=1e-12,extras=False):
     return
+"""
+A una matriz de m x n (m>=n)
+tol la tolerancia con la que se filtran elementos nulos en R
+retorna matrices Q y R calculadas con reflexiones de Householder
+Si la matriz A no cumple m>=n, debe retornar None
+extras : bool, opcional
+    Si es True, devuelve informacion extra sobre el proceso de factorizacion.
+    Por defecto es False. Esto lo hacemos para poder graficar el proceso.
+Devuelve la factorizacion QR de A usando reflectores de Householder.
+Devuelve: 
+    Q, R, extra_info (si extras es True)
+    Q, R (si extras es False)
+extra_info es un diccionario con la clave:
+    'R_matrices': lista de las matrices R en cada paso
+    'Q_matrices': lista de las matrices Q en cada paso
+    """
+
+def calculaQR(A,metodo='RH',tol=1e-12):
+    return
+"""
+A una matriz de n x n 
+tol la tolerancia con la que se filtran elementos nulos en R    
+metodo = ['RH','GS'] usa reflectores de Householder (RH) o Gram Schmidt (GS) para realizar la factorizacion
+retorna matrices Q y R calculadas con Gram Schmidt (y como tercer argumento opcional, el numero de operaciones)
+Si el metodo no esta entre las opciones, retorna None
+"""
+    
