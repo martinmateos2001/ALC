@@ -424,7 +424,7 @@ def matrizPorVectores(v, w):
             res[i,j] = v[i] * w[j]
     return res
 '''
-es la matriz resultante de hacer v por w^t
+Es la matriz resultante de hacer v por w^t
 '''
 def QR_con_HH(A,tol=1e-12,extras=False):
     m = A.shape[0]
