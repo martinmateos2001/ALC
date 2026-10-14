@@ -433,6 +433,11 @@ extra_info es un diccionario con la clave:
     """
 
 def calculaQR(A,metodo='RH',tol=1e-12):
+    m = A.shape[0]
+    n = A.shape[1]
+    if(m <n):
+        return None
+    
     return
 """
 A una matriz de n x n 
