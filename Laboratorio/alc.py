@@ -443,7 +443,9 @@ def QR_con_HH(A,tol=1e-12,extras=False):
         else:
             signo = -1
         alfa = -signo*norma(x, 2)
-        u = x - alfa * np.eye(m-k)[0]
+        e1 = np.zeros(m-k)
+        e1[0] = 1
+        u = x - alfa * e1
         norma_u = norma(u, 2)
         if norma_u > tol:
             u = u / norma_u
