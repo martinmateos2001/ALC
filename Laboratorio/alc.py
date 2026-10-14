@@ -84,7 +84,10 @@ La matriz escala la componente i de un vector de Rn en un factor s[i]
 def filaXcolumna(fila, columna, A, B):
     res = 0
     for k in range(A.shape[1]):
-        res = res + A[fila][k]*B[k][columna]
+        a = A[fila][k]
+        b = B[k][columna]
+        if(a != 0 and b != 0):
+            res = res + A[fila][k]*B[k][columna]
     return res
 
 def producto(A, B):
@@ -412,7 +415,17 @@ retorna_nops permite (opcionalmente) retornar el numero de operaciones realizado
 retorna matrices Q y R calculadas con Gram Schmidt (y como tercer argumento opcional, el numero de operaciones).
 Si la matriz A no es de n x n, debe retornar None
 """
-
+def matrizPorVectores(v, w):
+    m = len(v)
+    n = len(w)
+    res = np.zeros((m, n))
+    for i in range(0,m):
+        for j in range(0,n):
+            res[i,j] = v[i] * w[j]
+    return res
+'''
+es la matriz resultante de hacer v por w^t
+'''
 def QR_con_HH(A,tol=1e-12,extras=False):
     m = A.shape[0]
     n = A.shape[1]
@@ -420,7 +433,40 @@ def QR_con_HH(A,tol=1e-12,extras=False):
         return None
     R = A.copy()
     Q = np.eye(m)
-    return
+    R_matrices = []
+    Q_matrices = []
+    for k in range(0, n):
+        x = R[k:m, k]
+        signo = 0
+        if x[0] >= 0:
+            signo = 1
+        else:
+            signo = -1
+        alfa = -signo*norma(x, 2)
+        u = x - alfa * np.eye(m-k)[0]
+        norma_u = norma(u, 2)
+        if norma_u > tol:
+            u = u / norma_u
+            U = matrizPorVectores(u,u)
+            Hk = np.eye(m-k) - 2*U
+            H = np.zeros((m,m))
+            for i in range(0,k):
+                H[i,i] = 1
+            for i in range(k, m):
+                for j in range(k,m):
+                    H[i,j] = Hk[i-k, j-k]
+            R = producto(H, R)
+            Q = producto(Q, traspuesta(H))
+            if extras:
+                R_matrices.append(R.copy())
+                Q_matrices.append(Q.copy())
+    if(extras):
+        extra_info = {
+            'R_matrices': R_matrices,
+            'Q_matrices': Q_matrices
+        }
+        return Q, R, extra_info
+    return Q, R
 """
 A una matriz de m x n (m>=n)
 tol la tolerancia con la que se filtran elementos nulos en R
@@ -439,8 +485,10 @@ extra_info es un diccionario con la clave:
     """
 
 def calculaQR(A,metodo='RH',tol=1e-12):
-   
-    return
+    if(metodo == 'RH'):
+        return QR_con_HH(A, tol)
+    else:
+        return QR_con_GS(A, tol)
 """
 A una matriz de n x n 
 tol la tolerancia con la que se filtran elementos nulos en R    
