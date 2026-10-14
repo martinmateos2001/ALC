@@ -414,6 +414,12 @@ Si la matriz A no es de n x n, debe retornar None
 """
 
 def QR_con_HH(A,tol=1e-12,extras=False):
+    m = A.shape[0]
+    n = A.shape[1]
+    if(m <n):
+        return None
+    R = A.copy()
+    Q = np.eye(m)
     return
 """
 A una matriz de m x n (m>=n)
@@ -433,11 +439,7 @@ extra_info es un diccionario con la clave:
     """
 
 def calculaQR(A,metodo='RH',tol=1e-12):
-    m = A.shape[0]
-    n = A.shape[1]
-    if(m <n):
-        return None
-    
+   
     return
 """
 A una matriz de n x n 
