@@ -449,12 +449,8 @@ def QR_con_HH(A,tol=1e-12,extras=False):
             u = u / norma_u
             U = matrizPorVectores(u,u)
             Hk = np.eye(m-k) - 2*U
-            H = np.zeros((m,m))
-            for i in range(0,k):
-                H[i,i] = 1
-            for i in range(k, m):
-                for j in range(k,m):
-                    H[i,j] = Hk[i-k, j-k]
+            H = np.eye(m) 
+            H[k:m, k:m] = Hk 
             R = producto(H, R)
             Q = producto(Q, traspuesta(H))
             if extras:
