@@ -44,8 +44,8 @@ Recibe dos numeros x e y, y calcula el error relativo de aproximar x usando y en
 '''
 
 def matricesIguales(A,B):
-    A = np.array(A, dtype=np.float64)
-    B = np.array(B, dtype=np.float64)
+    A = np.array(A)
+    B = np.array(B)
     tolerancia = 1e-07  # Necesito chequear por cifras, ya que las ultimas pueden tener error de redondeo.
     # Comparo las dimensiones.
     if not(A.shape == B.shape):
