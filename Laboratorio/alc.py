@@ -1,4 +1,8 @@
+from math import prod
+
 import numpy as np
+
+from Laboratorio.libreria import esSimetrica
 
 ''' Funciones utilizables de numpy
 np.cos()
@@ -28,22 +32,28 @@ def abs(x):
         return -x
     
 def error(x,y):
+    '''
+Recibe dos numeros x e y, y calcula el error de aproximar x usando y en float64
+'''
     x = np.float64(x)
     y = np.float64(y)
     return (abs(y-x))
-'''
-Recibe dos numeros x e y, y calcula el error de aproximar x usando y en float64
-'''
+
 
 def error_relativo(x,y):
+    '''
+Recibe dos numeros x e y, y calcula el error relativo de aproximar x usando y en float64
+'''
     if not(x == 0):
         return error(x,y)/abs(x)
     return error(x,y)
-'''
-Recibe dos numeros x e y, y calcula el error relativo de aproximar x usando y en float64
-'''
+
 
 def matricesIguales(A,B):
+    '''
+Devuelve True si ambas matrices son iguales y False en otro caso.
+Considerar que las matrices pueden tener distintas dimensiones, ademas de distintos valores.
+'''
     A = np.array(A)
     B = np.array(B)
     tolerancia = 1e-07  # Necesito chequear por cifras, ya que las ultimas pueden tener error de redondeo.
@@ -58,28 +68,27 @@ def matricesIguales(A,B):
                 if (error(a,b) > tolerancia):
                     return False
         return True
-'''
-Devuelve True si ambas matrices son iguales y False en otro caso.
-Considerar que las matrices pueden tener distintas dimensiones, ademas de distintos valores.
-'''
+
 
 # --- Laboratorio 2 ---
 def rota(theta):
-    res = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
-    return res
-"""
+    """
 Recibe un ángulo theta y retorna una matriz de 2x2 que rota un vector dado en un ángulo theta
 """
+    res = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
+    return res
+
 
 def escala(s):
+    '''
+Recibe una tira de números s y retorna una matriz cuadrada de n x n, donde n es el tamaño de s.
+La matriz escala la componente i de un vector de Rn en un factor s[i]
+'''
     res = np.zeros((len(s), len(s)))
     for i in range(0,len(s)):
         res[i][i] = s[i]
     return res
-'''
-Recibe una tira de números s y retorna una matriz cuadrada de n x n, donde n es el tamaño de s.
-La matriz escala la componente i de un vector de Rn en un factor s[i]
-'''
+
 
 def filaXcolumna(fila, columna, A, B):
     res = 0
@@ -102,13 +111,14 @@ def producto(A, B):
 
 
 def rota_y_escala(theta, s):
+    '''
+Recibe un ángulo theta y una tira de numeros s, y retorna una matriz 2x2 que rota el vector en un ángulo theta y luego los escala en un factor s.
+'''
     R = rota(theta)
     S = escala(s)
     res = producto(S, R)
     return res
-'''
-Recibe un ángulo theta y una tira de numeros s, y retorna una matriz 2x2 que rota el vector en un ángulo theta y luego los escala en un factor s.
-'''
+
 def suma(A,B):
     if not(A.shape == B.shape):
         return None
@@ -119,6 +129,10 @@ def suma(A,B):
     return res
 
 def afin(theta, s, b):
+    '''
+Recibe un angulo theta, una tira de numeros s (en R2) y un vector b en R2.
+Retorna una matriz 3x3 que rota el vector en un angulo theta, luego lo escala en un factor de s y por ultimo lo mueve en un factor fijo b. 
+'''
     res = np.zeros((3,3))
     sr = rota_y_escala(theta, s)
     for i in range(2):
@@ -127,21 +141,19 @@ def afin(theta, s, b):
         res[i][2] = b[i]
     res[2][2]= 1    
     return res
-'''
-Recibe un angulo theta, una tira de numeros s (en R2) y un vector b en R2.
-Retorna una matriz 3x3 que rota el vector en un angulo theta, luego lo escala en un factor de s y por ultimo lo mueve en un factor fijo b. 
-'''
+
 
 def trans_afin(v, theta, s, b):
+    '''
+Recibe un vector v en R2, un angulo theta, una tira de numeros s en R2, y un vector b en R2.
+Retorna el vector w resultante de aplicar la transformacion afin a v.
+'''
     tl = afin(theta, s, b)
     x = tl[0][0]*v[0] + tl[0][1]*v[1] + tl[0][2]
     y = tl[1][0]*v[0] + tl[1][1]*v[1] + tl[1][2]
     res = np.array([x, y])
     return res
-'''
-Recibe un vector v en R2, un angulo theta, una tira de numeros s en R2, y un vector b en R2.
-Retorna el vector w resultante de aplicar la transformacion afin a v.
-'''
+
 
 # --- Laboratorio 3 ---
 def norma(x,p):
@@ -161,6 +173,9 @@ def norma(x,p):
     return res
     
 def normaliza(X, p):
+    '''
+Recibe X, una lista de vectores no vacios, y un escalar p. Devuelve una lista donde cada elemento corresponde a normalizar los elementos de X con la norma p.
+'''
     res = []
     for v in X:
         modulo = norma(v, p)
@@ -169,11 +184,13 @@ def normaliza(X, p):
             w.append(e/modulo)
         res.append(w)
     return np.array(res)
-'''
-Recibe X, una lista de vectores no vacios, y un escalar p. Devuelve una lista donde cada elemento corresponde a normalizar los elementos de X con la norma p.
-'''
+
 
 def normaMatMC(A,q,p,Np):
+    '''
+Devuelve la norma ||A||\_{q,p} y el vector x en el cual se alcanza el maximo.
+'''
+
     A = np.array(A, dtype=np.float64)
     dim = A.shape[1]
     X = np.random.uniform(-1, 1, size=(Np, dim)) # Np arreglos de dimension dim
@@ -188,9 +205,6 @@ def normaMatMC(A,q,p,Np):
             maximo = normAx
             x = v 
     return maximo, x
-'''
-Devuelve la norma ||A||\_{q,p} y el vector x en el cual se alcanza el maximo.
-'''
 
 def normaExacta(A, p=[1,'inf']):
     filas = A.shape[0]
@@ -222,20 +236,22 @@ def normaExacta(A, p=[1,'inf']):
     return None
 
 def condMC(A, p):
-    invA = np.linalg.inv(A)
-    res = normaMatMC(A, p, p, 10000)[0] * normaMatMC(invA, p, p, 10000)[0]
-    return res
-'''
+    '''
 Devuelve el numero de condicion de A usando la norma inducida p.
 '''
 
+    invA = np.linalg.inv(A)
+    res = normaMatMC(A, p, p, 10000)[0] * normaMatMC(invA, p, p, 10000)[0]
+    return res
+
 def condExacto(A, p):
+    '''
+Que devuelve el numero de condicion de A a partir de la formula de la ecuacion (1) usando la norma p.
+'''
     invA = np.linalg.inv(A)
     res = normaExacta(A,p) * normaExacta(invA, p) 
     return res
-'''
-Que devuelve el numero de condicion de A a partir de la formula de la ecuacion (1) usando la norma p.
-'''
+
 
 # --- Laboratorio 4 ---
 # NO SE PUEDE USAR @
@@ -364,7 +380,8 @@ def esSDP(A, atol=1e-8):
     return True
 
 # --- Laboratorio 5 ---
-def prod_vec(x,y):
+def productoEscalar(x,y):
+    """Retorna el producto escalar entre dos vectores x,y y el numero de operaciones."""
     ops = 0
     if(len(x) != len(y)):
         return None, ops
@@ -377,6 +394,13 @@ def prod_vec(x,y):
 
 
 def QR_con_GS(A, tol=1e-12, retorna_nops=False):
+    """
+A una matriz de n x n 
+tol la tolerancia con la que se filtran elementos nulos en R
+retorna_nops permite (opcionalmente) retornar el numero de operaciones realizado
+retorna matrices Q y R calculadas con Gram Schmidt (y como tercer argumento opcional, el numero de operaciones).
+Si la matriz A no es de n x n, debe retornar None
+"""
     ops = 0
     n = A.shape[0]
     At = traspuesta(A) # Cada fila es un vector.
@@ -393,7 +417,7 @@ def QR_con_GS(A, tol=1e-12, retorna_nops=False):
         v = At[i]
         j = i-1
         while j > -1:
-            rji= prod_vec(Qt[j],At[i])[0]
+            rji= productoEscalar(Qt[j],At[i])[0]
             R[j,i] = rji
             v = v - (rji * Qt[j])
             j -= 1
@@ -408,14 +432,11 @@ def QR_con_GS(A, tol=1e-12, retorna_nops=False):
     if(retorna_nops):
         return Q, R, ops 
     return Q, R
-"""
-A una matriz de n x n 
-tol la tolerancia con la que se filtran elementos nulos en R
-retorna_nops permite (opcionalmente) retornar el numero de operaciones realizado
-retorna matrices Q y R calculadas con Gram Schmidt (y como tercer argumento opcional, el numero de operaciones).
-Si la matriz A no es de n x n, debe retornar None
-"""
-def matrizPorVectores(v, w):
+
+def productoExterno(v, w):
+    '''
+Es la matriz resultante de hacer v por w^t
+'''
     m = len(v)
     n = len(w)
     res = np.zeros((m, n))
@@ -423,10 +444,24 @@ def matrizPorVectores(v, w):
         for j in range(0,n):
             res[i,j] = v[i] * w[j]
     return res
-'''
-Es la matriz resultante de hacer v por w^t
-'''
+
 def QR_con_HH(A,tol=1e-12,extras=False):
+    """
+A una matriz de m x n (m>=n)
+tol la tolerancia con la que se filtran elementos nulos en R
+retorna matrices Q y R calculadas con reflexiones de Householder
+Si la matriz A no cumple m>=n, debe retornar None
+extras : bool, opcional
+    Si es True, devuelve informacion extra sobre el proceso de factorizacion.
+    Por defecto es False. Esto lo hacemos para poder graficar el proceso.
+Devuelve la factorizacion QR de A usando reflectores de Householder.
+Devuelve: 
+    Q, R, extra_info (si extras es True)
+    Q, R (si extras es False)
+extra_info es un diccionario con la clave:
+    'R_matrices': lista de las matrices R en cada paso
+    'Q_matrices': lista de las matrices Q en cada paso
+    """
     m = A.shape[0]
     n = A.shape[1]
     if(m <n):
@@ -449,7 +484,7 @@ def QR_con_HH(A,tol=1e-12,extras=False):
         norma_u = norma(u, 2)
         if norma_u > tol:
             u = u / norma_u
-            U = matrizPorVectores(u,u)
+            U = productoExterno(u,u)
             Hk = np.eye(m-k) - 2*U
             H = np.eye(m) 
             H[k:m, k:m] = Hk 
@@ -465,33 +500,99 @@ def QR_con_HH(A,tol=1e-12,extras=False):
         }
         return Q, R, extra_info
     return Q, R
-"""
-A una matriz de m x n (m>=n)
-tol la tolerancia con la que se filtran elementos nulos en R
-retorna matrices Q y R calculadas con reflexiones de Householder
-Si la matriz A no cumple m>=n, debe retornar None
-extras : bool, opcional
-    Si es True, devuelve informacion extra sobre el proceso de factorizacion.
-    Por defecto es False. Esto lo hacemos para poder graficar el proceso.
-Devuelve la factorizacion QR de A usando reflectores de Householder.
-Devuelve: 
-    Q, R, extra_info (si extras es True)
-    Q, R (si extras es False)
-extra_info es un diccionario con la clave:
-    'R_matrices': lista de las matrices R en cada paso
-    'Q_matrices': lista de las matrices Q en cada paso
-    """
+
 
 def calculaQR(A,metodo='RH',tol=1e-12):
-    if(metodo == 'RH'):
-        return QR_con_HH(A, tol)
-    else:
-        return QR_con_GS(A, tol)
-"""
+    """
 A una matriz de n x n 
 tol la tolerancia con la que se filtran elementos nulos en R    
 metodo = ['RH','GS'] usa reflectores de Householder (RH) o Gram Schmidt (GS) para realizar la factorizacion
 retorna matrices Q y R calculadas con Gram Schmidt (y como tercer argumento opcional, el numero de operaciones)
 Si el metodo no esta entre las opciones, retorna None
 """
-    
+    if(metodo == 'RH'):
+        return QR_con_HH(A, tol)
+    else:
+        return QR_con_GS(A, tol)
+
+
+def productoMatrizVector (A, v):
+    res = np.zeros(A.shape[0])
+    for i in range(A.shape[0]):
+        res[i], _ = productoEscalar(A[i], v)
+    return res
+
+def cocienteRayleigh(A, v):
+    """
+    Dada una matriz cuadrada y un vector v, retorna el cociente de Rayleigh.
+    """
+    return productoEscalar(v, productoMatrizVector(A, v))/productoEscalar(v,v)
+
+def metpot2k(A, tol=1e-15, K=1000):
+    """
+    - A, matriz n x n
+    - tol, tolerancia en la diferencia entre un paso y el siguiente en la estimación del autovector.
+    - K, numero máximo de iteraciones a realizarse.
+    Retorna:
+        v, l, k
+    Donde v es un autovector A, l es el autovalor de A con autovector v, k el número de iteraciones. 
+    """
+    n = A.shape[1]
+    v = np.random.rand(n)
+    v = v / norma(v, 2)
+    w = productoMatrizVector(A, v)
+    w = w / norma(w, 2)
+    e, _ = productoEscalar(w, v)
+    k=0
+    while (1- abs(e) > tol and k < K):
+        v = w
+        w = productoMatrizVector(A, v)
+        w = w / norma(w, 2)
+        e, _ = productoEscalar(w,v)
+        k += 1
+    l, _ = productoEscalar(w, productoMatrizVector(A,w))
+    return w, l, k
+
+def reflectorHouseholder(v):
+    """
+    Devuelve el reflector de householder de v
+    """
+    I = np.eye(len(v))
+    A = productoExterno(v, v)
+    v_norma_cuadrada, _ = productoEscalar(v,v)
+    return I - (2*A / v_norma_cuadrada)
+
+def diagRHaux(A, tol= 1e-15, K=1000):
+    n = A.shape[0]
+    v, l, _ = metpot2k(A, tol, K)
+    signo = 1 if v[0] >=0 else -1
+    v[0] = v[0] + signo
+    H = reflectorHouseholder(v)
+    if(n == 2):
+        S = H
+        D = producto(H, producto(A, H))
+        return S, D
+    B = producto(H, producto(A, H))
+    A_moño = B[1:, 1:]
+    S_moño, D_moño = diagRH(A_moño, tol, K)
+    D = np.zeros(A.shape)
+    D[0,0] = l
+    D[1: , 1:] = D_moño
+    S_prima = np.eye(n)
+    S_prima[1: , 1:] = S_moño
+    S = producto(H, S_prima)
+    return S, D 
+
+def diagRH(A, tol= 1e-15, K=1000):
+    """
+    A: matriz n x n simétrica.
+    tol: tolerancia en la estimación del autovector. 
+    K: numero de iteraciones máxima.
+    Retorna matriz de autovectores S y la matriz de autovalores D, tal que A = S@D@S.T
+    """
+    if(not esSimetrica(A)):
+        return None
+
+    return diagRHaux(A, tol, K)
+
+# ------ Laboratorio 7 ------

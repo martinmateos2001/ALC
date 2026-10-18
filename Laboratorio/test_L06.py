@@ -1,10 +1,12 @@
 # Test L06-metpot2k, Aval
+from traceback import print_tb
 
+from alc import *
 import numpy as np
 
 #### TESTEOS
 # Tests metpot2k
-
+print("Test Metodo de la potencia")
 S = np.vstack([
     np.array([2,1,0])/np.sqrt(5),
     np.array([-1,2,5])/np.sqrt(30),
@@ -20,9 +22,10 @@ for i in range(100):
     if np.abs(l - np.max(D))< 1e-8:
         exitos += 1
 assert exitos > 95
-
+print("Éxito Metodo de la potencia")
 
 #Test con HH
+print("Inicio Test diagRH")
 exitos = 0
 for i in range(100):
     v = np.random.rand(9)
@@ -52,6 +55,8 @@ S = np.vstack([
 
 A = S@D@S.T
 SRH,DRH = diagRH(A,tol=1e-15,K=1e5)
+print('S \n', SRH)
+print('D \n', DRH)
 assert np.allclose(D,DRH)
 assert np.allclose(np.abs(S.T@SRH),np.eye(A.shape[0]),atol=1e-7)
 
@@ -69,5 +74,6 @@ for i in range(100):
         exitos += 1
 assert exitos >= 95
 
-
+print("Exito diagRH")
+print("YEEYY")
 
