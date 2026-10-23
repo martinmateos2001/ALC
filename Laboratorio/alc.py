@@ -1,8 +1,4 @@
-from math import prod
-
 import numpy as np
-
-from Laboratorio.libreria import esSimetrica
 
 ''' Funciones utilizables de numpy
 np.cos()
@@ -22,7 +18,20 @@ Operaciones de slicing
 @ para multiplicar.
 np.isclose().
 '''
-
+def esSimetrica(A):
+    '''
+    A: matriz cualquiera
+    '''
+    m = A.shape[0]
+    n = A.shape[1]
+    At = traspuesta(A)
+    if(m != n):
+        return False
+    for i in range(n):
+        for j in range(n):
+            if(A[i,j] != At[i,j]):
+                return False
+    return True
 # --- Laboratorio 1 ---
 
 def abs(x):
@@ -90,23 +99,25 @@ La matriz escala la componente i de un vector de Rn en un factor s[i]
     return res
 
 
-def filaXcolumna(fila, columna, A, B):
+def filaXcolumna(fila, columna, A, B, tol):
     res = 0
     for k in range(A.shape[1]):
         a = A[fila][k]
         b = B[k][columna]
         if(a != 0 and b != 0):
-            res = res + A[fila][k]*B[k][columna]
+            suma = A[fila][k]*B[k][columna]
+            if abs(suma) > tol: 
+                res = res + suma
     return res
 
-def producto(A, B):
+def producto(A, B, tol = 1e-15):
     if not(A.shape[1] == B.shape[0]):
         return None
     else:
         res = np.zeros((A.shape[0], B.shape[1]))
         for i in range(0, A.shape[0]):
-            for j in range(0, B.shape[1]):  
-                res[i][j] = filaXcolumna(i, j, A, B)
+            for j in range(0, B.shape[1]):
+                res[i][j] = filaXcolumna(i, j, A, B, tol) 
         return res
 
 
@@ -264,8 +275,6 @@ def esTriangularSuperior(A:np.array) -> bool:
                 return False
             j+=1
     return True
-
-
     
 def calculaLU(A):
     if(A is None):
@@ -324,12 +333,13 @@ def res_tri(L,b,inferior=True):
         return X
     
 def traspuesta(A):
-    res = np.zeros(A.shape)
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
+    m = A.shape[0]
+    n = A.shape[1]
+    res = np.zeros((n, m))
+    for i in range(n):
+        for j in range(m):
             res[i][j] = A[j][i]
     return res
-
 
 def inversa(A):
     
@@ -516,10 +526,12 @@ Si el metodo no esta entre las opciones, retorna None
         return QR_con_GS(A, tol)
 
 
-def productoMatrizVector (A, v):
+def productoMatrizVector(A, v, tol=1e-15):
     res = np.zeros(A.shape[0])
     for i in range(A.shape[0]):
-        res[i], _ = productoEscalar(A[i], v)
+        r, _ = productoEscalar(A[i], v)
+        if(abs(r) > tol):
+            res[i] = r
     return res
 
 def cocienteRayleigh(A, v):
@@ -541,7 +553,10 @@ def metpot2k(A, tol=1e-15, K=1000):
     v = np.random.rand(n)
     v = v / norma(v, 2)
     w = productoMatrizVector(A, v)
-    w = w / norma(w, 2)
+    nw = norma(w, 2)
+    if nw <= tol:
+        return v, 0.0, 0
+    w = w / nw
     e, _ = productoEscalar(w, v)
     k=0
     while (1- abs(e) > tol and k < K):
@@ -568,13 +583,14 @@ def diagRHaux(A, tol= 1e-15, K=1000):
     signo = 1 if v[0] >=0 else -1
     v[0] = v[0] + signo
     H = reflectorHouseholder(v)
-    if(n == 2):
+    if(n == 2 or abs(l) < tol):
         S = H
         D = producto(H, producto(A, H))
         return S, D
     B = producto(H, producto(A, H))
     A_moño = B[1:, 1:]
-    S_moño, D_moño = diagRH(A_moño, tol, K)
+
+    S_moño, D_moño = diagRHaux(A_moño, tol, K)
     D = np.zeros(A.shape)
     D[0,0] = l
     D[1: , 1:] = D_moño
@@ -588,11 +604,93 @@ def diagRH(A, tol= 1e-15, K=1000):
     A: matriz n x n simétrica.
     tol: tolerancia en la estimación del autovector. 
     K: numero de iteraciones máxima.
-    Retorna matriz de autovectores S y la matriz de autovalores D, tal que A = S@D@S.T
+    Retorna matriz de autovectores S y la matriz de autovalores D, tal que A = S@D@S.T.
+    En caso de que no sea simetrica retorna None.
     """
     if(not esSimetrica(A)):
-        return None
-
+        return False
     return diagRHaux(A, tol, K)
 
 # ------ Laboratorio 7 ------
+
+# ------ Laboratorio 8 ------
+def mezclar(izq, der):
+    res = []
+    i = 0
+    j = 0
+    while(i<len(izq) and j < len(der)):
+        if(izq[i][0] > der[j][0]):
+            res.append(izq[i])
+            i += 1
+        else:
+            res.append(der[j])
+            j += 1
+    while i < len(izq):
+        res.append(izq[i])
+        i += 1
+    while j < len(der):
+        res.append(der[j])
+        j += 1
+    return res
+
+def ordenarValoresSingulares(arr):
+    if(len(arr) <= 1):
+        return arr
+
+    medio = len(arr) // 2
+    izq = arr[:medio]
+    der = arr[medio:]
+    izquierda = ordenarValoresSingulares(izq)
+    derecha = ordenarValoresSingulares(der)
+
+    return mezclar(izquierda, derecha)
+
+def svd_reducida(A, k='max', tol=1e-15):
+    '''
+    - A: matriz de interes (m x n).
+    - k: número de valores singulares (y vectores) a retener.
+    - tol: tolerancia a considerar un valor singular igual a cero.
+    Retorna las matrices que componen la 'Descomposición en Valores Singulares' de la matriz A:
+    - hatU: matriz m x k
+    - hatSig: matriz k x k
+    - hatV: matriz n x k
+    '''
+    m = A.shape[0]
+    n = A.shape[1]
+    r = min(m, n)
+    At = traspuesta(A)
+    if(m >= n): #V
+        X = producto(At, A, tol)
+    else: #U
+        X = producto(A, At, tol)
+    
+    hatX, E = diagRH(X)
+    singulares = [] # vector de valores singulares
+    for i in range(r):
+        a = E[i,i]**0.5
+        if a > tol:
+            singulares.append([a, i])
+    
+    # ordenar valores singulares
+    singulares = ordenarValoresSingulares(singulares)
+    indices = [t[1] for t in singulares]
+    hatSig = np.array([t[0] for t in singulares])
+
+    if(k != 'max'):
+        indices = indices[:k]
+        hatSig = hatSig[:k]
+    p = len(hatSig)
+    hatV = np.zeros((n,p))
+    hatU = np.zeros((m,p))
+
+    if(m >= n):
+        hatV = hatX[:, indices]
+        hatU = producto(A, hatV, tol)
+        for j in range(p):
+            hatU[:, j] = hatU[:, j] / hatSig[j]
+    else:
+        hatU = hatX[:, indices]
+        hatV = producto(At, hatU, tol)
+        for j in range(p): 
+            hatV[:, j] = hatV[:, j] / hatSig[j]
+    return hatU, hatSig, hatV

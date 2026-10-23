@@ -1,14 +1,6 @@
+import numpy as np
+from alc import *
 # Tests L08
-def svd_reducida(A,k="max",tol=1e-15):
-    """
-    A la matriz de interes (de m x n)
-    k el numero de valores singulares (y vectores) a retener.
-    tol la tolerancia para considerar un valor singular igual a cero
-    Retorna hatU (matriz de m x k), hatSig (vector de k valores singulares) y hatV (matriz de n x k)
-    """
-    raise NotImplementedError("Implementar svd_reducida!")
-
-    
 # Matrices al azar
 def genera_matriz_para_test(m,n=2,tam_nucleo=0):
     if tam_nucleo == 0:
@@ -52,3 +44,5 @@ for k in [1,3,5]:
     assert hU.shape[1] == k, 'Dimensiones de hU incorrectas (caso a)'
     assert hV.shape[1] == k, 'Dimensiones de hV incorrectas(caso a)'
     assert len(hS) == k, 'Tamaño de hS incorrecto'
+
+print('Exito : )')
