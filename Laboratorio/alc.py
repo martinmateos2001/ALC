@@ -376,7 +376,7 @@ def calculaLDV(A):
                 Uc[i,j] = Uc[i,j]/D[i,i]
     return L, D, Uc
 
-def esSDP(A, atol=1e-8):
+def esSDP(A, atol=1e-5):
     n=A.shape[0]
     if(n != A.shape[1]):
         return False
@@ -385,7 +385,7 @@ def esSDP(A, atol=1e-8):
         if(D[i,i] <= 0):
             return False
         for j in range(0, i+1):
-            if not (np.isclose(L[i,j], V[j,i], atol)):
+            if not (np.isclose(L[i,j], V[j,i], atol=atol)):
                 return False
     return True
 
