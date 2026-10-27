@@ -612,6 +612,39 @@ def diagRH(A, tol= 1e-15, K=1000):
     return diagRHaux(A, tol, K)
 
 # ------ Laboratorio 7 ------
+def transisciones_al_azar_continuas(n):
+    '''
+    - n: la cantidad de filas (columnas) de la matriz de transicion.
+    Retorna la matriz T de (n x n) normalizada por columnas, y con entradas al azar en
+    el intervalo [0,1]. 
+    '''
+def transiciones_al_azar_uniforme(n, thres):
+    '''
+    - n: la cantidad de filas (columnas) de la matriz de transicion.
+    - thres: probabilidad de que una entrada sea distinta de cero.
+    Retorna la matriz T de (n x n) normalizada por columnas. El elemento (i,j) es distinto de
+    cero si el numero generado al azar para (i,j) es menor o igual a thres. Todos los elementos
+    de la columna j son iguales a 1 sobre el número de elementos distintos de cero en la columna.
+    '''
+
+def nucleo(A, tol=1e-15):
+    '''
+    - A: matriz de (m x n)
+    - tol: tolerancia para asumir que un vector está en el núcleo.
+    Calcula el núcleo de la matriz A diagonalizando la matriz traspuesta(A) @ A, usando el método
+    diagRH. El núcleo corresponde a los autovectores de autovalor con modulo <= tol.
+    Retorna los autovectores en cuestión, como una matriz de (n x k). con k el número de autovectores
+    en el núcleo.
+    '''
+
+def crea_rala(listado, m_filas, n_columnas, tol=1e-15):
+    '''
+    
+    '''
+
+def multiplica_rala_vector(A, v):
+    '''
+    '''
 
 # ------ Laboratorio 8 ------
 def mezclar(izq, der):
