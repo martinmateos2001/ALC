@@ -445,8 +445,8 @@ Si la matriz A no es de n x n, debe retornar None
 
 def productoExterno(v, w):
     '''
-Es la matriz resultante de hacer v por w^t
-'''
+    Es la matriz resultante de hacer v por w^t
+    '''
     m = len(v)
     n = len(w)
     res = np.zeros((m, n))
