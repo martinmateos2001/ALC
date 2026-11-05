@@ -577,7 +577,7 @@ def reflectorHouseholder(v):
     v_norma_cuadrada, _ = productoEscalar(v,v)
     return I - (2*A / v_norma_cuadrada)
 
-def diagRHaux(A, tol= 1e-15, K=1000):
+def diagRHaux(A, tol, K):
     n = A.shape[0]
     v, l, _ = metpot2k(A, tol, K)
     signo = 1 if v[0] >=0 else -1
@@ -612,13 +612,22 @@ def diagRH(A, tol= 1e-15, K=1000):
     return diagRHaux(A, tol, K)
 
 # ------ Laboratorio 7 ------
-def transisciones_al_azar_continuas(n):
+def transiciones_al_azar_continuas(n):
     '''
     - n: la cantidad de filas (columnas) de la matriz de transicion.
     Retorna la matriz T de (n x n) normalizada por columnas, y con entradas al azar en
     el intervalo [0,1]. 
     '''
-def transiciones_al_azar_uniforme(n, thres):
+    A = np.array(np.random.rand(n,n))
+    for j in range(n):
+        col = A[:, j]
+        s = 0
+        for k in range(n):
+            s += col[k]
+        A[:, j] = col / s
+    return A
+
+def transiciones_al_azar_uniformes(n, thres):
     '''
     - n: la cantidad de filas (columnas) de la matriz de transicion.
     - thres: probabilidad de que una entrada sea distinta de cero.
@@ -626,6 +635,23 @@ def transiciones_al_azar_uniforme(n, thres):
     cero si el numero generado al azar para (i,j) es menor o igual a thres. Todos los elementos
     de la columna j son iguales a 1 sobre el número de elementos distintos de cero en la columna.
     '''
+    A = np.random.rand(n, n)
+    for i in range(n):
+        for j in range(n):
+            if(A[i,j] <= thres):
+                A[i,j] = 1
+            else:
+                A[i,j] = 0
+    for j in range(n):
+        col = A[:, j]
+        s = 0
+        for k in range(n):
+            s += col[k]
+        if(s != 0):
+            A[:,j] = col / s
+        else:
+            A[:,j] = 1/n
+    return A
 
 def nucleo(A, tol=1e-15):
     '''
@@ -636,15 +662,56 @@ def nucleo(A, tol=1e-15):
     Retorna los autovectores en cuestión, como una matriz de (n x k). con k el número de autovectores
     en el núcleo.
     '''
+    P = producto(traspuesta(A), A)
+    n = P.shape[0]
+    Vs, Avls = diagRH(producto(traspuesta(A), A), tol=tol)
+    ceros = []
+    for i in range(n):
+        if(abs(Avls[i,i]) <= tol):
+            ceros.append(i)
+    k = len(ceros)
+    Res = np.zeros((n, k))
+    for i in range(k):
+        Res[:, i] = Vs[:, ceros[i]]
+    return Res
+
+
 
 def crea_rala(listado, m_filas, n_columnas, tol=1e-15):
     '''
-    
+    Recibe una lista 'listado', con tres elementos: lista de indices i, lista de indices j, y lista de valores A_{ij} de la matriz A.
+    Tambien se reciben las dimensiones de la matriz la cual es (m_filas, n_columnas). Los elementos menores a tol se descartan.
+
+    Idealmente, el listado debe incluir unicamente posiciones correspondientes a valores distitintos de cero. Retorna una lista con:
+    -  Diccionario {(i,j), A_{ij}} que representa los elementos no nulos de la matriz A. Los elementos con modulo menor a tol deben descartarse por default.
+    - Tupla (m_filas, n_columnas) que permita conocer las dimensiones de la matriz.
     '''
+    res = {}
+    if(len(listado) == 0):
+        return {}, (m_filas, n_columnas)
+    for k in range(len(listado[0])):
+        i = listado[0][k]
+        j = listado[1][k]
+        a = listado[2][k]
+        if abs(a) >= tol:
+            res[(i,j)] = a
+    T = (m_filas, n_columnas)
+    return res , T
 
 def multiplica_rala_vector(A, v):
     '''
+    Recibe una matriz rala creada con crea_rala() y un vector v.
+    Retorna un vector w resultado de multiplicar A con v.
     '''
+    n = len(v)
+    d, t = A
+    res = np.zeros(n)
+    for k in d:
+        i = k[0]
+        j = k[1]
+        a = d[k]
+        res[i] += a * v[j]
+    return res
 
 # ------ Laboratorio 8 ------
 def mezclar(izq, der):
